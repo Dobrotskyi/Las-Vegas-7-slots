@@ -66,6 +66,7 @@ public class Row : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
 
+        IsStoped = true;
         Stoped?.Invoke();
     }
 
