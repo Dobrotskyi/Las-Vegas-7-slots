@@ -16,6 +16,7 @@ public class Row : MonoBehaviour
 
     public void StartSpinning(float time)
     {
+        IsStoped = false;
         StartCoroutine(Spin(time));
     }
 

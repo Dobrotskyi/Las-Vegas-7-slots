@@ -6,6 +6,7 @@ public class ChangeDisplayedAmt : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _amtField;
     [SerializeField] protected int _defaultStep = 100;
     [SerializeField] protected int _value = 400;
+    [SerializeField] protected string _prefix = string.Empty;
 
     public virtual int Step => _defaultStep;
     public int Value => _value;
@@ -33,5 +34,5 @@ public class ChangeDisplayedAmt : MonoBehaviour
         UpdateField();
     }
 
-    private void UpdateField() => _amtField.text = _value.ToString();
+    private void UpdateField() => _amtField.text = _prefix + _value.ToString();
 }

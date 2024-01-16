@@ -149,6 +149,7 @@ MonoBehaviour:
   _amtField: {fileID: 3803813012009514118}
   _defaultStep: 100
   _value: 100
+  _prefix: 'Step:'
 --- !u!114 &3803813012009514118 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5537702490798243902, guid: f35a3cc7f792d7b4ea142ae4c0026a06, type: 3}
