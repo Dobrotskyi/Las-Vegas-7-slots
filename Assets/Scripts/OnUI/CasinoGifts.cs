@@ -11,9 +11,6 @@ public class CasinoGifts : MonoBehaviour
     private float _difference = 0;
     private Animator _animator;
 
-    public bool TestScriptAnimation;
-    public bool TestAnimatorAnimation;
-
     public void GiftChosen()
     {
         int added = (int)Random.Range(_difference, _difference * _maxMoneyMultiplier + _difference);

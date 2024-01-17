@@ -23,14 +23,12 @@ public class SlotMachine : MonoBehaviour
 
     public void LaunchMachine()
     {
-        //Bet = _bettingField.Value;
-        //PlayerInfoHolder.WithdrawCoins(Bet);
+        Bet = _bettingField.Value;
+        PlayerInfoHolder.WithdrawCoins(Bet);
 
-        //HandlePulled?.Invoke();
-        //for (int i = 0; i < _rows.Count; i++)
-        //    _rows[i].StartSpinning(SpinningTime + TimeStep * i);
-
-        PlayerInfoHolder.WithdrawMoney(1000);
+        HandlePulled?.Invoke();
+        for (int i = 0; i < _rows.Count; i++)
+            _rows[i].StartSpinning(SpinningTime + TimeStep * i);
     }
 
     private void OnEnable()
