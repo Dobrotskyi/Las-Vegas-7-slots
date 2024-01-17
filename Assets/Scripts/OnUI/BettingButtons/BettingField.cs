@@ -7,9 +7,11 @@ public class BettingField : ChangeDisplayedAmt
 
     public override void Add()
     {
-        //if (Value + Step > PlayerInfoHolder.PlayerCoins)
-        //    Add(PlayerInfoHolder.PlayerCoins - Value);
-        //else
-        base.Add();
+#if UNITY_EDITOR
+        if (Value + Step > PlayerInfoHolder.PlayerCoins)
+            Add(PlayerInfoHolder.PlayerCoins - Value);
+        else
+#endif
+            base.Add();
     }
 }

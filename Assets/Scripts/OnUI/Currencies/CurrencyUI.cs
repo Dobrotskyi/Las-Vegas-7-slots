@@ -11,6 +11,8 @@ public class CurrencyUI : MonoBehaviour
     }
     [SerializeField] private Currency _displayedCurrency;
     [SerializeField] private TextMeshProUGUI _currencyField;
+    [SerializeField] private PopUp _popUp;
+    private int _lastValue;
 
     private Func<int> GetCurrency;
 
@@ -27,6 +29,7 @@ public class CurrencyUI : MonoBehaviour
             PlayerInfoHolder.CasinoMoneyUpdated += UpdateField;
         }
 
+        _lastValue = GetCurrency();
         UpdateField();
     }
 
@@ -38,6 +41,18 @@ public class CurrencyUI : MonoBehaviour
             PlayerInfoHolder.CasinoMoneyUpdated -= UpdateField;
     }
 
-    private void UpdateField() => _currencyField.text = GetCurrency().ToString();
+    private void UpdateField()
+    {
+        _currencyField.text = GetCurrency().ToString();
+        int difference = GetCurrency() - _lastValue;
+        if (difference != 0)
+        {
+            if (difference > 0)
+                _popUp.Show("+" + difference.ToString());
+            else
+                _popUp.Show(difference.ToString());
+        }
+        _lastValue = GetCurrency();
+    }
 
 }

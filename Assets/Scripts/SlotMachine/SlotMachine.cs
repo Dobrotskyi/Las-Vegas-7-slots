@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -65,6 +64,10 @@ public class SlotMachine : MonoBehaviour
         if (!IsRoundEnded) return;
 
         Combination currentCombination = new(_rows.Select(r => r.CurrentSlotItem).ToList());
+
+        foreach (var slot in currentCombination.Slots)
+            Debug.Log(slot.ToString());
+
         Combination match = FindWinningCombinationIn(currentCombination);
         if (match != null)
         {
