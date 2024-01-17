@@ -21,10 +21,10 @@ public class ChangeDisplayedAmt : MonoBehaviour
 
     public virtual void Decrease()
     {
-        if (_value - Step > 0)
+        if (_value - Step >= _defaultStep)
             _value -= Step;
         else
-            _value = 0;
+            _value = _defaultStep;
 
         UpdateField();
     }

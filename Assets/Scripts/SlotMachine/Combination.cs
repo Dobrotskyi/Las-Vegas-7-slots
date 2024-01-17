@@ -7,10 +7,10 @@ using UnityEngine;
 public class Combination
 {
     [SerializeField] private List<Items> _slots = new();
-    [SerializeField] private int _reward = 100;
+    [SerializeField] private float _multiplier = 1;
 
     public IReadOnlyList<Items> Slots => _slots;
-    public int Reward => _reward;
+    public float Multiplier => _multiplier;
 
     public Combination(IEnumerable<Items> slots)
     {

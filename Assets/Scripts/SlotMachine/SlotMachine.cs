@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,20 +14,29 @@ public class SlotMachine : MonoBehaviour
     [SerializeField] private List<Row> _rows = new();
     [SerializeField] private List<Combination> _combinations = new();
     [SerializeField] private Button _handle;
+    private BettingField _bettingField;
 
     public float SpinningTime { private set; get; } = 3f;
     public float TimeStep { private set; get; } = 2f;
+    public int Bet { private set; get; }
     private bool IsRoundEnded => _rows.Count(r => r.IsStoped) == _rows.Count;
 
     public void LaunchMachine()
     {
-        HandlePulled?.Invoke();
-        for (int i = 0; i < _rows.Count; i++)
-            _rows[i].StartSpinning(SpinningTime + TimeStep * i);
+        //Bet = _bettingField.Value;
+        //PlayerInfoHolder.WithdrawCoins(Bet);
+
+        //HandlePulled?.Invoke();
+        //for (int i = 0; i < _rows.Count; i++)
+        //    _rows[i].StartSpinning(SpinningTime + TimeStep * i);
+
+        PlayerInfoHolder.WithdrawMoney(1000);
     }
 
     private void OnEnable()
     {
+        _bettingField = FindObjectOfType<BettingField>(true);
+
         foreach (var row in _rows)
             row.Stoped += RowStoped;
 
@@ -60,13 +70,31 @@ public class SlotMachine : MonoBehaviour
         Combination match = FindWinningCombinationIn(currentCombination);
         if (match != null)
         {
-            //Win
-            Debug.Log("Win");
+            switch (Roles.CurrentRole)
+            {
+                case Roles.Role.Player:
+                    {
+                        Debug.Log("Player won");
+                        PlayerInfoHolder.AddCoins((int)(Bet + Bet * match.Multiplier));
+                        break;
+                    }
+                case Roles.Role.Dealer:
+                    {
+                        Debug.Log("Casino lost");
+                        PlayerInfoHolder.WithdrawMoney((int)(Bet * match.Multiplier));
+                        break;
+                    }
+            }
         }
         else
         {
-            Debug.Log("Lose");
-            //lose
+            if (Roles.CurrentRole == Roles.Role.Player)
+                Debug.Log("Visitor lost");
+            if (Roles.CurrentRole == Roles.Role.Dealer)
+            {
+                Debug.Log("Dealer Won");
+                PlayerInfoHolder.AddMoney(Bet);
+            }
         }
 
         RoundEnded?.Invoke();

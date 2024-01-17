@@ -11,7 +11,7 @@ public class Roles : MonoBehaviour
         Dealer,
         Player
     }
-    public Role CurrentRole { private set; get; } = Role.Player;
+    public static Role CurrentRole { private set; get; } = Role.Player;
 
     public void DealerTogglePressed(Toggle toggle)
     {

@@ -3,6 +3,8 @@ using UnityEngine;
 
 public static class PlayerInfoHolder
 {
+    public static event Action<int> NotEnoughMoney;
+
     private const string CASINO_MONEY = "Casino Money";
     private const string PLAYER_COINS = "Player Coins";
 
@@ -34,12 +36,26 @@ public static class PlayerInfoHolder
     public static void AddMoney(int money)
     {
         if (money < 0) return;
-        money += money;
+        CasinoMoney += money;
     }
 
     public static void AddCoins(int coins)
     {
         if (coins < 0) return;
-        coins += coins;
+        PlayerCoins += coins;
+    }
+
+    public static void WithdrawMoney(int money)
+    {
+        if (CasinoMoney < money)
+            NotEnoughMoney?.Invoke(money - CasinoMoney);
+
+        CasinoMoney -= money;
+    }
+
+    public static void WithdrawCoins(int coins)
+    {
+        if (PlayerCoins < coins) return;
+        PlayerCoins -= coins;
     }
 }
