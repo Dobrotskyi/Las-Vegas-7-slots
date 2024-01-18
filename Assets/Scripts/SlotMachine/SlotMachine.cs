@@ -18,6 +18,7 @@ public class SlotMachine : MonoBehaviour
     public float SpinningTime { private set; get; } = 3f;
     public float TimeStep { private set; get; } = 2f;
     public int Bet { private set; get; }
+    public IList<Combination> Combinations => _combinations.AsReadOnly();
     private bool IsRoundEnded => _rows.Count(r => r.IsStoped) == _rows.Count;
 
     public void LaunchMachine()
