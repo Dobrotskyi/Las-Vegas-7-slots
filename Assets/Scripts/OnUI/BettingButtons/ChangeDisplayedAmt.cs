@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class ChangeDisplayedAmt : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI _amtField;
+    [SerializeField] protected TextMeshProUGUI _amtField;
     [SerializeField] protected int _defaultStep = 100;
     [SerializeField] protected int _value = 400;
     [SerializeField] protected string _prefix = string.Empty;
@@ -12,12 +12,6 @@ public class ChangeDisplayedAmt : MonoBehaviour
     public int Value => _value;
 
     public virtual void Add() => Add(Step);
-
-    protected void Add(int amt)
-    {
-        _value += amt;
-        UpdateField();
-    }
 
     public virtual void Decrease()
     {
@@ -29,10 +23,16 @@ public class ChangeDisplayedAmt : MonoBehaviour
         UpdateField();
     }
 
+    protected void Add(int amt)
+    {
+        _value += amt;
+        UpdateField();
+    }
+
+    protected void UpdateField() => _amtField.text = _prefix + _value.ToString();
+
     private void Awake()
     {
         UpdateField();
     }
-
-    private void UpdateField() => _amtField.text = _prefix + _value.ToString();
 }

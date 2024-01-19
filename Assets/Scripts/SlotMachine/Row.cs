@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Row : MonoBehaviour
@@ -20,20 +21,33 @@ public class Row : MonoBehaviour
         StartCoroutine(Spin(time));
     }
 
+    private float RotationToSlot(int index)
+    {
+        RectTransform slot1 = _row.GetChild(0).GetComponent<RectTransform>();
+        RectTransform slot2 = _row.GetChild(1).GetComponent<RectTransform>();
+        float step = Mathf.Abs(slot1.anchoredPosition.y - slot2.anchoredPosition.y);
+        float slotHeight = slot1.rect.height;
+
+        return StartingPosition.y - slotHeight / 2 + step * index; ;
+    }
+
     private IEnumerator Spin(float spinningTime)
     {
+        yield return null;
+
         float t = 0;
         float speed = 0;
 
         RectTransform slot1 = _row.GetChild(0).GetComponent<RectTransform>();
-        RectTransform slot2 = _row.GetChild(1).GetComponent<RectTransform>();
-
-        float step = Mathf.Abs(slot1.anchoredPosition.y - slot2.anchoredPosition.y);
         float slotHeight = slot1.rect.height;
         bool checkForRowEnd() => _row.anchoredPosition.y > _row.rect.height / 2 - slotHeight;
-        float rotationToSlot(int index) => StartingPosition.y - slotHeight / 2 + step * index;
 
-        _row.anchoredPosition = new Vector2(_row.anchoredPosition.x, rotationToSlot(UnityEngine.Random.Range(0, _row.childCount)));
+        List<Transform> activeChildren = new();
+        foreach (Transform child in _row.transform)
+            if (child.gameObject.activeSelf)
+                activeChildren.Add(child);
+
+        _row.anchoredPosition = new Vector2(_row.anchoredPosition.x, RotationToSlot(UnityEngine.Random.Range(0, activeChildren.Count)));
 
         while (t < spinningTime)
         {
@@ -53,7 +67,7 @@ public class Row : MonoBehaviour
 
         t = 0;
         float startY = _row.anchoredPosition.y;
-        float endY = rotationToSlot(GetClosestSlotIndex());
+        float endY = RotationToSlot(GetClosestSlotIndex());
 
         while (t < 1f)
         {
@@ -61,9 +75,11 @@ public class Row : MonoBehaviour
             newPosition.y = Mathf.Lerp(startY, endY, t / 1);
             _row.anchoredPosition = newPosition;
             t += Time.deltaTime;
-
             if (checkForRowEnd())
+            {
                 _row.anchoredPosition = StartingPosition;
+                t -= Time.deltaTime;
+            }
             yield return new WaitForEndOfFrame();
         }
 

@@ -192,6 +192,9 @@ MonoBehaviour:
   _value: 400
   _prefix: 'Bet:'
   _step: {fileID: 0}
+  _buttons:
+  - {fileID: 1284913842612415395}
+  - {fileID: 7953262311905364148}
 --- !u!1 &5987796212550038929
 GameObject:
   m_ObjectHideFlags: 0
@@ -456,6 +459,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7521053608656182070, guid: b723fa44d5cd2dd4d83c4dca14bf8f2a, type: 3}
   m_PrefabInstance: {fileID: 256665887045193789}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &7953262311905364148 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7912953929398556809, guid: b723fa44d5cd2dd4d83c4dca14bf8f2a, type: 3}
+  m_PrefabInstance: {fileID: 256665887045193789}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &4475542591495973173
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -40,7 +40,6 @@ public class ResultsShower : MonoBehaviour
         _animator = GetComponent<Animator>();
         var slotMachine = FindObjectOfType<SlotMachine>(true);
         _combinations = _combinationGroup.GetComponentsInChildren<CombinationShower>(true).ToList();
-        Debug.Log(_combinations.Count);
 
         int i = 0;
         foreach (var combination in slotMachine.Combinations)

@@ -6,5 +6,8 @@ public enum Items
     Bar,
     Seven,
     Cherry,
-    Lemon
+    Lemon,
+    X2,
+    FreeSpin,
+    Clone
 }

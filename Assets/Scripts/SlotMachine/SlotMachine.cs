@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,6 +10,8 @@ public class SlotMachine : MonoBehaviour
     public static event Action HandlePulled;
     public static event Action FirstRowStoped;
     public static event Action RoundEnded;
+
+    private static readonly HashSet<Items> Bonuses = new HashSet<Items>() { Items.X2, Items.FreeSpin, Items.Clone };
 
     [SerializeField] private List<Row> _rows = new();
     [SerializeField] private List<Combination> _combinations = new();
@@ -24,7 +27,10 @@ public class SlotMachine : MonoBehaviour
     public void LaunchMachine()
     {
         Bet = _bettingField.Value;
-        PlayerInfoHolder.WithdrawCoins(Bet);
+        if (PlayerInfoHolder.FreeSpinsAmt == 0)
+            PlayerInfoHolder.WithdrawCoins(Bet);
+        else
+            PlayerInfoHolder.FreeSpinsAmt -= 1;
 
         HandlePulled?.Invoke();
         for (int i = 0; i < _rows.Count; i++)
@@ -61,7 +67,6 @@ public class SlotMachine : MonoBehaviour
     {
         if (_rows.Count(r => r.IsStoped) == 1)
             FirstRowStoped?.Invoke();
-
         if (!IsRoundEnded) return;
 
         Combination currentCombination = new(_rows.Select(r => r.CurrentSlotItem).ToList());
@@ -70,6 +75,38 @@ public class SlotMachine : MonoBehaviour
             Debug.Log(slot.ToString());
 
         Combination match = FindWinningCombinationIn(currentCombination);
+        int winning = 0;
+        if (match != null)
+            winning = (int)(Bet + Bet * match.Multiplier);
+
+        foreach (var bonus in Bonuses)
+            if (currentCombination.Slots.Contains(bonus))
+            {
+                switch (bonus)
+                {
+                    case Items.X2:
+                        {
+                            if (match != null)
+                                winning *= 2;
+                            break;
+                        }
+                    case Items.FreeSpin:
+                        {
+                            PlayerInfoHolder.FreeSpinsAmt += 1;
+                            break;
+                        }
+                    case Items.Clone:
+                        {
+                            int index = currentCombination.Slots.ToList().FindIndex(x => x == Items.Clone);
+                            int leftIndex = index > 0 ? index - 1 : 0;
+                            int rightIndex = index < currentCombination.Slots.Count() - 1 ? index + 1 : index;
+                            int randomIndex = UnityEngine.Random.Range(leftIndex, rightIndex + 1);
+
+
+                            break;
+                        }
+                }
+            }
         if (match != null)
         {
             switch (Roles.CurrentRole)
@@ -77,7 +114,7 @@ public class SlotMachine : MonoBehaviour
                 case Roles.Role.Player:
                     {
                         Debug.Log("Player won");
-                        PlayerInfoHolder.AddCoins((int)(Bet + Bet * match.Multiplier));
+                        PlayerInfoHolder.AddCoins(winning);
                         break;
                     }
                 case Roles.Role.Dealer:
