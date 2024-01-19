@@ -74,46 +74,30 @@ public class SlotMachine : MonoBehaviour
         foreach (var slot in currentCombination.Slots)
             Debug.Log(slot.ToString());
 
+        if (currentCombination.Slots.Contains(Items.Clone))
+        {
+            //Clone;
+            //int index = currentCombination.Slots.ToList().FindIndex(x => x == Items.Clone);
+            //int leftIndex = index > 0 ? index - 1 : 0;
+            //int rightIndex = index < currentCombination.Slots.Count() - 1 ? index + 1 : index;
+            //int randomIndex = UnityEngine.Random.Range(leftIndex, rightIndex + 1);
+        }
+
         Combination match = FindWinningCombinationIn(currentCombination);
-        int winning = 0;
-        if (match != null)
-            winning = (int)(Bet + Bet * match.Multiplier);
 
-        foreach (var bonus in Bonuses)
-            if (currentCombination.Slots.Contains(bonus))
-            {
-                switch (bonus)
-                {
-                    case Items.X2:
-                        {
-                            if (match != null)
-                                winning *= 2;
-                            break;
-                        }
-                    case Items.FreeSpin:
-                        {
-                            PlayerInfoHolder.FreeSpinsAmt += 1;
-                            break;
-                        }
-                    case Items.Clone:
-                        {
-                            int index = currentCombination.Slots.ToList().FindIndex(x => x == Items.Clone);
-                            int leftIndex = index > 0 ? index - 1 : 0;
-                            int rightIndex = index < currentCombination.Slots.Count() - 1 ? index + 1 : index;
-                            int randomIndex = UnityEngine.Random.Range(leftIndex, rightIndex + 1);
+        if (currentCombination.Slots.Contains(Items.FreeSpin))
+            PlayerInfoHolder.FreeSpinsAmt += 1;
 
-
-                            break;
-                        }
-                }
-            }
         if (match != null)
         {
             switch (Roles.CurrentRole)
             {
                 case Roles.Role.Player:
                     {
+                        int winning = (int)(Bet + Bet * match.Multiplier);
                         Debug.Log("Player won");
+                        if (currentCombination.Slots.Contains(Items.X2))
+                            winning *= 2;
                         PlayerInfoHolder.AddCoins(winning);
                         break;
                     }
