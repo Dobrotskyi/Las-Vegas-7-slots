@@ -16,4 +16,11 @@ public class Combination
     {
         _slots = slots.ToList();
     }
+
+    public void ChangeSlot(int index, Items item)
+    {
+        if (index < 0 || index >= _slots.Count)
+            return;
+        _slots[index] = item;
+    }
 }

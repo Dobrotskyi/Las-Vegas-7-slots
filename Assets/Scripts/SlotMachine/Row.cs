@@ -9,10 +9,12 @@ public class Row : MonoBehaviour
 
     [SerializeField] private RectTransform _row;
     [SerializeField] private AnimationCurve _spinningCurve;
+    [SerializeField] private ParticleSystem _stopEffect;
     private float _startingSpeed = 20f;
 
     public bool IsStoped { private set; get; }
-    public Items CurrentSlotItem => _row.GetChild(GetClosestSlotIndex()).GetComponent<Slot>().Item;
+    public Items CurrentSlotItem => CurrentSlot.Item;
+    public Slot CurrentSlot => _row.GetChild(GetClosestSlotIndex()).GetComponent<Slot>();
     private Vector2 StartingPosition => new(_row.anchoredPosition.x, -_row.rect.height / 2);
 
     public void StartSpinning(float time)
@@ -83,8 +85,18 @@ public class Row : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
 
-        IsStoped = true;
-        Stoped?.Invoke();
+        CreateEffect(transform.position);
+    }
+
+    private void CreateEffect(Vector2 position)
+    {
+        ParticleSystem spawned = Instantiate(_stopEffect, position, Quaternion.identity);
+        spawned.GetComponent<ParticleSystemCallback>().Stoped.AddListener(() =>
+        {
+            IsStoped = true;
+            Stoped?.Invoke();
+            Destroy(spawned);
+        });
     }
 
     private int GetClosestSlotIndex()

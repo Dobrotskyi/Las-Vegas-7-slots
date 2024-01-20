@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Burst.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -76,11 +77,21 @@ public class SlotMachine : MonoBehaviour
 
         if (currentCombination.Slots.Contains(Items.Clone))
         {
-            //Clone;
-            //int index = currentCombination.Slots.ToList().FindIndex(x => x == Items.Clone);
-            //int leftIndex = index > 0 ? index - 1 : 0;
-            //int rightIndex = index < currentCombination.Slots.Count() - 1 ? index + 1 : index;
-            //int randomIndex = UnityEngine.Random.Range(leftIndex, rightIndex + 1);
+            int index = currentCombination.Slots.ToList().FindIndex(x => x == Items.Clone);
+            int leftIndex = index > 0 ? index - 1 : 0;
+            int rightIndex = index < currentCombination.Slots.Count() - 1 ? index + 1 : leftIndex;
+
+            int randomIndex = UnityEngine.Random.Range(leftIndex, rightIndex + 1);
+            if (Bonuses.Contains(_rows[randomIndex].CurrentSlotItem))
+            {
+                if (leftIndex != rightIndex)
+                    randomIndex = randomIndex == rightIndex ? leftIndex : rightIndex;
+            }
+
+            SlotClone clone = (SlotClone)_rows[index].CurrentSlot;
+            Slot clonnedSlot = _rows[randomIndex].CurrentSlot;
+            clone.Clone(clonnedSlot.GetComponent<Image>().sprite);
+            currentCombination.ChangeSlot(index, clonnedSlot.Item);
         }
 
         Combination match = FindWinningCombinationIn(currentCombination);
