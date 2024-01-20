@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.Burst.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -34,8 +33,17 @@ public class SlotMachine : MonoBehaviour
             PlayerInfoHolder.FreeSpinsAmt -= 1;
 
         HandlePulled?.Invoke();
+        WithdrawBonuses();
+
         for (int i = 0; i < _rows.Count; i++)
             _rows[i].StartSpinning(SpinningTime + TimeStep * i);
+    }
+
+    private void WithdrawBonuses()
+    {
+        foreach (var bonus in Bonuses)
+            if (PlayerInfoHolder.GetBonusAmount(bonus) > 0)
+                PlayerInfoHolder.BonusUsed(bonus);
     }
 
     private void OnEnable()
@@ -75,29 +83,15 @@ public class SlotMachine : MonoBehaviour
         foreach (var slot in currentCombination.Slots)
             Debug.Log(slot.ToString());
 
-        if (currentCombination.Slots.Contains(Items.Clone))
-        {
-            int index = currentCombination.Slots.ToList().FindIndex(x => x == Items.Clone);
-            int leftIndex = index > 0 ? index - 1 : 0;
-            int rightIndex = index < currentCombination.Slots.Count() - 1 ? index + 1 : leftIndex;
+        HandleCloneBonus(currentCombination);
 
-            int randomIndex = UnityEngine.Random.Range(leftIndex, rightIndex + 1);
-            if (Bonuses.Contains(_rows[randomIndex].CurrentSlotItem))
-            {
-                if (leftIndex != rightIndex)
-                    randomIndex = randomIndex == rightIndex ? leftIndex : rightIndex;
-            }
-
-            SlotClone clone = (SlotClone)_rows[index].CurrentSlot;
-            Slot clonnedSlot = _rows[randomIndex].CurrentSlot;
-            clone.Clone(clonnedSlot.GetComponent<Image>().sprite);
-            currentCombination.ChangeSlot(index, clonnedSlot.Item);
-        }
+        foreach (var slot in currentCombination.Slots)
+            Debug.Log(slot.ToString());
 
         Combination match = FindWinningCombinationIn(currentCombination);
 
         if (currentCombination.Slots.Contains(Items.FreeSpin))
-            PlayerInfoHolder.FreeSpinsAmt += 1;
+            PlayerInfoHolder.FreeSpinsAmt += currentCombination.Slots.Count(s => s == Items.FreeSpin);
 
         if (match != null)
         {
@@ -105,7 +99,7 @@ public class SlotMachine : MonoBehaviour
             {
                 case Roles.Role.Player:
                     {
-                        int winning = (int)(Bet + Bet * match.Multiplier);
+                        int winning = (int)(Bet * match.Multiplier);
                         Debug.Log("Player won");
                         if (currentCombination.Slots.Contains(Items.X2))
                             winning *= 2;
@@ -132,6 +126,53 @@ public class SlotMachine : MonoBehaviour
         }
 
         RoundEnded?.Invoke();
+    }
+
+    private void HandleCloneBonus(Combination combination)
+    {
+        if (combination.Slots.Contains(Items.Clone))
+        {
+            int index = combination.Slots.ToList().FindIndex(x => x == Items.Clone);
+            int leftIndex = index > 0 ? index - 1 : 0;
+            int rightIndex = index < combination.Slots.Count() - 1 ? index + 1 : leftIndex;
+            int randomIndex = UnityEngine.Random.Range(0, 2) == 0 ? leftIndex : rightIndex;
+
+            if (Bonuses.Contains(combination.Slots[randomIndex]))
+            {
+                if (leftIndex != rightIndex)
+                    randomIndex = randomIndex == rightIndex ? leftIndex : rightIndex;
+            }
+
+            SlotClone clone = (SlotClone)_rows[index].CurrentSlot;
+            Slot slotToClone = _rows[randomIndex].CurrentSlot;
+
+            Items clonedItem = slotToClone.Item;
+            if (slotToClone is SlotClone clone2)
+            {
+                if (clone2.Representing != Items.Clone)
+                    clonedItem = clone2.Representing;
+                else
+                {
+                    while (slotToClone is SlotClone)
+                    {
+                        if (randomIndex + 1 < _rows.Count)
+                            randomIndex++;
+                        else
+                            return;
+
+                        if (randomIndex == index)
+                            continue;
+
+                        slotToClone = _rows[randomIndex].CurrentSlot;
+                    }
+                }
+            }
+
+            clone.Clone(slotToClone.GetComponent<Image>().sprite, combination.Slots[randomIndex]);
+            combination.ChangeSlot(index, clonedItem);
+
+            HandleCloneBonus(combination);
+        }
     }
 
     private Combination FindWinningCombinationIn(Combination combination)

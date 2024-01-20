@@ -39,16 +39,30 @@ public static class PlayerInfoHolder
         return PlayerPrefs.GetInt(item.ToString(), 0);
     }
 
+    public static void BonusUsed(Items item)
+    {
+        if (!ValidateBonus(item)) return;
+
+        PlayerPrefs.SetInt(item.ToString(), GetBonusAmount(item) - 1);
+        BonusAmtChanged?.Invoke();
+    }
+
     public static void BuyBonus(Items item)
     {
-        if (!PriceList.ContainsKey(item))
-            return;
-        if (PlayerCoins < PriceList[item])
-            return;
+        if (!ValidateBonus(item)) return;
 
         PlayerCoins -= PriceList[item];
         PlayerPrefs.SetInt(item.ToString(), GetBonusAmount(item) + 1);
         BonusAmtChanged?.Invoke();
+    }
+
+    private static bool ValidateBonus(Items item)
+    {
+        if (!PriceList.ContainsKey(item))
+            return false;
+        if (PlayerCoins < PriceList[item])
+            return false;
+        return true;
     }
 
     public static int FreeSpinsAmt

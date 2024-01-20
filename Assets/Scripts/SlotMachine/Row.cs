@@ -19,8 +19,10 @@ public class Row : MonoBehaviour
 
     public void StartSpinning(float time)
     {
-        IsStoped = false;
-        StartCoroutine(Spin(time));
+        IsStoped = true;
+        Stoped?.Invoke();
+        //IsStoped = false;
+        //StartCoroutine(Spin(time));
     }
 
     private float RotationToSlot(int index)
@@ -95,7 +97,7 @@ public class Row : MonoBehaviour
         {
             IsStoped = true;
             Stoped?.Invoke();
-            Destroy(spawned);
+            Destroy(spawned.gameObject);
         });
     }
 
@@ -103,8 +105,9 @@ public class Row : MonoBehaviour
     {
         Transform closestChild = _row.GetChild(0);
         foreach (Transform child in _row.transform)
-            if (Vector2.Distance(transform.position, child.position) < Vector2.Distance(transform.position, closestChild.position))
-                closestChild = child;
+            if (child.gameObject.activeSelf)
+                if (Vector2.Distance(transform.position, child.position) < Vector2.Distance(transform.position, closestChild.position))
+                    closestChild = child;
 
         return closestChild.GetSiblingIndex();
     }

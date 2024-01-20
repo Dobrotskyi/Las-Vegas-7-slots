@@ -34,7 +34,6 @@ public class BettingField : ChangeDisplayedAmt
     {
         _value = PlayerInfoHolder.FREESPIN_BET;
         base.UpdateField();
-        Debug.Log(PlayerInfoHolder.FreeSpinsAmt == 0);
 
         foreach (Button button in _buttons)
             button.interactable = PlayerInfoHolder.FreeSpinsAmt == 0;
