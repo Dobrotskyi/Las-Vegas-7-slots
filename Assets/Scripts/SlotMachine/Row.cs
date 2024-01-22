@@ -19,10 +19,8 @@ public class Row : MonoBehaviour
 
     public void StartSpinning(float time)
     {
-        IsStoped = true;
-        Stoped?.Invoke();
-        //IsStoped = false;
-        //StartCoroutine(Spin(time));
+        IsStoped = false;
+        StartCoroutine(Spin(time));
     }
 
     private float RotationToSlot(int index)
