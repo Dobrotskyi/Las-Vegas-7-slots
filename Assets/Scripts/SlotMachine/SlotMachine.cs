@@ -16,13 +16,13 @@ public class SlotMachine : MonoBehaviour
     [SerializeField] private List<Row> _rows = new();
     [SerializeField] private List<Combination> _combinations = new();
     [SerializeField] private Button _handle;
-    [SerializeField] private int _rowsMerged = 1;
+    [SerializeField] private int _visibleSlots = 1;
     private BettingField _bettingField;
 
     public float SpinningTime { private set; get; } = 3f;
     public float TimeStep { private set; get; } = 2f;
     public int Bet { private set; get; }
-    public int RowsMerged => _rowsMerged;
+    public int VisibleSlots => _visibleSlots;
     public IList<Combination> Combinations => _combinations.AsReadOnly();
     private bool IsRoundEnded => _rows.Count(r => r.IsStoped) == _rows.Count;
 

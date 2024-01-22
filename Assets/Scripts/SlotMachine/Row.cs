@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Row : MonoBehaviour
 {
@@ -12,15 +13,18 @@ public class Row : MonoBehaviour
     [SerializeField] private AnimationCurve _spinningCurve;
     [SerializeField] private ParticleSystem _stopEffect;
     private float _startingSpeed = 20f;
+    private int _displayedSlots = 1;
 
     public bool IsStoped { private set; get; }
     public Items CurrentSlotItem => CurrentSlot.Item;
     public Slot CurrentSlot => _row.GetChild(GetClosestSlotIndex()).GetComponent<Slot>();
-    private Vector2 StartingPosition => new(_row.anchoredPosition.x, -_row.rect.height / 2);
+    private Vector2 StartingPosition => new(_row.anchoredPosition.x, -_row.rect.height / 2 + _row.GetComponent<VerticalLayoutGroup>().spacing / 2);
 
     public void StartSpinning(float time)
     {
         IsStoped = false;
+        foreach (Transform child in _row)
+            child.gameObject.SetActive(true);
         StartCoroutine(Spin(time));
     }
 
@@ -67,23 +71,18 @@ public class Row : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
 
-        float startY = _row.anchoredPosition.y;
-        float endY = RotationToSlot(GetClosestSlotIndex());
+        foreach (Transform child in _row)
+            child.gameObject.SetActive(false);
 
-        while (Mathf.Abs(_row.anchoredPosition.y - endY) > 5)
+        for (int i = 0; i < _displayedSlots; i++)
         {
-            Vector2 newPosition = _row.anchoredPosition;
-            step = _startingSpeed * getEasing();
-            newPosition.y += step;
-            _row.anchoredPosition = newPosition;
-
-            if (checkForRowEnd())
-                _row.anchoredPosition = StartingPosition;
-
-            yield return new WaitForEndOfFrame();
+            Transform slot = _row.GetChild(UnityEngine.Random.Range(0, _row.childCount));
+            if (slot.gameObject.activeSelf)
+                i--;
+            else
+                slot.gameObject.SetActive(true);
         }
-
-        _row.anchoredPosition = new(_row.anchoredPosition.x, endY);
+        _row.anchoredPosition = new(_row.anchoredPosition.x, 0);
 
         CreateEffect(transform.position);
     }
@@ -113,6 +112,7 @@ public class Row : MonoBehaviour
     private void Start()
     {
         StartCoroutine(Init());
+        _displayedSlots = FindObjectOfType<SlotMachine>().VisibleSlots;
     }
 
     private IEnumerator Init()
@@ -120,19 +120,12 @@ public class Row : MonoBehaviour
         yield return 0;
         SpawnSlotsInRow();
         yield return 0;
-        SetStartingPosition();
-    }
-
-    private void SetStartingPosition()
-    {
-        Vector2 newPosition = StartingPosition;
-        newPosition.y -= _row.GetChild(0).GetComponent<RectTransform>().rect.height / 2;
-        _row.anchoredPosition = newPosition;
+        _row.anchoredPosition = new(_row.anchoredPosition.x, RotationToSlot(UnityEngine.Random.Range(0, _row.childCount - 1)));
     }
 
     private void SpawnSlotsInRow()
     {
-        int rowsMerged = FindObjectOfType<SlotMachine>().RowsMerged;
+        int rowsMerged = FindObjectOfType<SlotMachine>().VisibleSlots;
         if (rowsMerged == 1)
             return;
 
