@@ -19,7 +19,7 @@ public class Bonus : MonoBehaviour
     private void Setup()
     {
         if (PlayerInfoHolder.GetBonusAmount(_item) == 0)
-            gameObject.SetActive(false);
+            Destroy(gameObject);
         else
             gameObject.SetActive(true);
     }

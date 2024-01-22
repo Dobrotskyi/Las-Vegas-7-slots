@@ -31,7 +31,7 @@ public class Row : MonoBehaviour
         float step = Mathf.Abs(slot1.anchoredPosition.y - slot2.anchoredPosition.y);
         float slotHeight = slot1.rect.height;
 
-        return StartingPosition.y - slotHeight / 2 + step * index; ;
+        return StartingPosition.y - slotHeight / 2 + step * index;
     }
 
     private IEnumerator Spin(float spinningTime)
@@ -52,13 +52,17 @@ public class Row : MonoBehaviour
 
         _row.anchoredPosition = new Vector2(_row.anchoredPosition.x, RotationToSlot(UnityEngine.Random.Range(0, activeChildren.Count)));
 
-        while (t < spinningTime)
+        float getEasing()
         {
             float normalizedProgress = t / spinningTime;
-            float easing = _spinningCurve.Evaluate(normalizedProgress);
-            speed = _startingSpeed * easing;
+            return _spinningCurve.Evaluate(normalizedProgress);
+        }
 
+        while (t < spinningTime)
+        {
+            speed = _startingSpeed * getEasing();
             t += Time.deltaTime;
+
             Vector2 newPosition = _row.anchoredPosition;
             newPosition.y += speed;
             _row.anchoredPosition = newPosition;
@@ -82,6 +86,7 @@ public class Row : MonoBehaviour
             {
                 _row.anchoredPosition = StartingPosition;
                 t -= Time.deltaTime;
+                Debug.Log("check for row end");
             }
             yield return new WaitForEndOfFrame();
         }
@@ -108,6 +113,7 @@ public class Row : MonoBehaviour
                 if (Vector2.Distance(transform.position, child.position) < Vector2.Distance(transform.position, closestChild.position))
                     closestChild = child;
 
+        Debug.Log(closestChild.name);
         return closestChild.GetSiblingIndex();
     }
 
@@ -119,13 +125,12 @@ public class Row : MonoBehaviour
     private IEnumerator Init()
     {
         yield return 0;
-
         SpawnSlotsInRow();
         yield return 0;
-        SetPosition();
+        SetStartingPosition();
     }
 
-    private void SetPosition()
+    private void SetStartingPosition()
     {
         Vector2 newPosition = StartingPosition;
         newPosition.y -= _row.GetChild(0).GetComponent<RectTransform>().rect.height / 2;
