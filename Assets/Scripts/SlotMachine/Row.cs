@@ -39,7 +39,7 @@ public class Row : MonoBehaviour
         yield return null;
 
         float t = 0;
-        float speed = 0;
+        float step = 0;
 
         RectTransform slot1 = _row.GetChild(0).GetComponent<RectTransform>();
         float slotHeight = slot1.rect.height;
@@ -58,13 +58,13 @@ public class Row : MonoBehaviour
             return _spinningCurve.Evaluate(normalizedProgress);
         }
 
-        while (t < spinningTime)
+        while (t < spinningTime * 0.95f)
         {
-            speed = _startingSpeed * getEasing();
+            step = _startingSpeed * getEasing();
             t += Time.deltaTime;
 
             Vector2 newPosition = _row.anchoredPosition;
-            newPosition.y += speed;
+            newPosition.y += step;
             _row.anchoredPosition = newPosition;
 
             if (checkForRowEnd())
@@ -72,24 +72,23 @@ public class Row : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
 
-        t = 0;
         float startY = _row.anchoredPosition.y;
         float endY = RotationToSlot(GetClosestSlotIndex());
 
-        while (t < 1f)
+        while (Mathf.Abs(_row.anchoredPosition.y - endY) > 5)
         {
             Vector2 newPosition = _row.anchoredPosition;
-            newPosition.y = Mathf.Lerp(startY, endY, t / 1);
+            step = _startingSpeed * getEasing();
+            newPosition.y += step;
             _row.anchoredPosition = newPosition;
-            t += Time.deltaTime;
+
             if (checkForRowEnd())
-            {
                 _row.anchoredPosition = StartingPosition;
-                t -= Time.deltaTime;
-                Debug.Log("check for row end");
-            }
+
             yield return new WaitForEndOfFrame();
         }
+
+        _row.anchoredPosition = new(_row.anchoredPosition.x, endY);
 
         CreateEffect(transform.position);
     }
@@ -113,7 +112,6 @@ public class Row : MonoBehaviour
                 if (Vector2.Distance(transform.position, child.position) < Vector2.Distance(transform.position, closestChild.position))
                     closestChild = child;
 
-        Debug.Log(closestChild.name);
         return closestChild.GetSiblingIndex();
     }
 
