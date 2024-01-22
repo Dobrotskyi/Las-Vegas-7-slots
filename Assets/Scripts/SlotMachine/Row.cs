@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Row : MonoBehaviour
@@ -112,16 +113,51 @@ public class Row : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(SetSlotsPositionAfterFrame());
+        StartCoroutine(Init());
     }
 
-    private IEnumerator SetSlotsPositionAfterFrame()
+    private IEnumerator Init()
     {
         yield return 0;
 
-        Vector2 newPosition = StartingPosition;
-        newPosition.y -= _row.GetChild(0).GetComponent<RectTransform>().sizeDelta.y / 2;
+        SpawnSlotsInRow();
+        yield return 0;
+        SetPosition();
+    }
 
+    private void SetPosition()
+    {
+        Vector2 newPosition = StartingPosition;
+        newPosition.y -= _row.GetChild(0).GetComponent<RectTransform>().rect.height / 2;
         _row.anchoredPosition = newPosition;
+    }
+
+    private void SpawnSlotsInRow()
+    {
+        int rowsMerged = FindObjectOfType<SlotMachine>().RowsMerged;
+        if (rowsMerged == 1)
+            return;
+
+        List<List<Transform>> rowsToMerge = new();
+
+        List<Transform> currentSlots = new();
+        foreach (Transform child in _row.transform)
+            currentSlots.Add(child);
+
+        for (int i = 0; i < rowsMerged - 1; i++)
+            rowsToMerge.Add(currentSlots.ToList());
+
+        while (rowsToMerge.Count > 0)
+        {
+            var randomRow = rowsToMerge[UnityEngine.Random.Range(0, rowsToMerge.Count)];
+            var randomSlot = randomRow[UnityEngine.Random.Range(0, randomRow.Count)];
+
+            Transform spawned = Instantiate(randomSlot, _row);
+            spawned.transform.SetSiblingIndex(UnityEngine.Random.Range(0, _row.childCount));
+
+            randomRow.Remove(randomSlot);
+            if (randomRow.Count == 0)
+                rowsToMerge.Remove(randomRow);
+        }
     }
 }
