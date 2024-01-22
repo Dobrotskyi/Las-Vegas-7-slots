@@ -45,12 +45,7 @@ public class Row : MonoBehaviour
         float slotHeight = slot1.rect.height;
         bool checkForRowEnd() => _row.anchoredPosition.y > _row.rect.height / 2 - slotHeight;
 
-        List<Transform> activeChildren = new();
-        foreach (Transform child in _row.transform)
-            if (child.gameObject.activeSelf)
-                activeChildren.Add(child);
-
-        _row.anchoredPosition = new Vector2(_row.anchoredPosition.x, RotationToSlot(UnityEngine.Random.Range(0, activeChildren.Count)));
+        _row.anchoredPosition = new Vector2(_row.anchoredPosition.x, RotationToSlot(UnityEngine.Random.Range(0, _row.childCount)));
 
         float getEasing()
         {
