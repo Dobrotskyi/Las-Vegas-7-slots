@@ -80,38 +80,58 @@ public class SlotMachine : MonoBehaviour
             FirstRowStoped?.Invoke();
         if (!IsRoundEnded) return;
 
-        Combination currentCombination = new(_rows.Select(r => r.CurrentSlotItem).ToList());
+        List<Combination> currentCombinations = new();
+        if (VisibleSlots == 1)
+            currentCombinations.Add(new(_rows.Select(r => r.CurrentSlotItem)));
 
-        foreach (var slot in currentCombination.Slots)
+        else
+        {
+            for (int i = 0; i < _rows.Count; i++)
+                currentCombinations.Add(_rows[i].GetVerticalCombination());
+
+            for (int i = 0; i < _rows.Count; i++)
+            {
+                Items[] itemsInHorizontal = new Items[_rows.Count];
+                for (int j = 0; j < itemsInHorizontal.Length; j++)
+                    itemsInHorizontal[j] = currentCombinations[j].Slots[i];
+
+                currentCombinations.Add(new(itemsInHorizontal));
+            }
+        }
+        foreach (var slot in currentCombinations[0].Slots)
             Debug.Log(slot.ToString());
 
-        HandleCloneBonus(currentCombination);
+        float multipliers = 0;
+        int x2Count = 0;
+        foreach (var combination in currentCombinations)
+        {
+            HandleCloneBonus(combination);
+            HandleFreeSpinBonus(combination);
+            List<Combination> matches = FindWinningCombinationIn(combination).ToList();
+            if (matches.Count > 0)
+                multipliers += matches.Sum(m => m.Multiplier);
+            x2Count += combination.Slots.Count(s => s == Items.X2);
+        }
+        multipliers *= x2Count > 0 ? (int)Mathf.Pow(2, x2Count) : 1;
 
-        foreach (var slot in currentCombination.Slots)
+        foreach (var slot in currentCombinations[0].Slots)
             Debug.Log(slot.ToString());
 
-        Combination match = FindWinningCombinationIn(currentCombination);
-
-        if (currentCombination.Slots.Contains(Items.FreeSpin))
-            PlayerInfoHolder.FreeSpinsAmt += currentCombination.Slots.Count(s => s == Items.FreeSpin);
-
-        if (match != null)
+        if (multipliers != 0)
         {
             switch (Roles.CurrentRole)
             {
                 case Roles.Role.Player:
                     {
-                        int winning = (int)(Bet * match.Multiplier);
+                        int winning = (int)(Bet * multipliers);
                         Debug.Log("Player won");
-                        if (currentCombination.Slots.Contains(Items.X2))
-                            winning *= 2;
                         PlayerInfoHolder.AddCoins(winning);
                         break;
                     }
                 case Roles.Role.Dealer:
                     {
                         Debug.Log("Casino lost");
-                        PlayerInfoHolder.WithdrawMoney((int)(Bet * match.Multiplier));
+                        PlayerInfoHolder.WithdrawMoney((int)(Bet * multipliers));
                         break;
                     }
             }
@@ -128,6 +148,12 @@ public class SlotMachine : MonoBehaviour
         }
 
         RoundEnded?.Invoke();
+    }
+
+    private void HandleFreeSpinBonus(Combination combination)
+    {
+        if (combination.Slots.Contains(Items.FreeSpin))
+            PlayerInfoHolder.FreeSpinsAmt += combination.Slots.Count(s => s == Items.FreeSpin);
     }
 
     private void HandleCloneBonus(Combination combination)
@@ -177,7 +203,7 @@ public class SlotMachine : MonoBehaviour
         }
     }
 
-    private Combination FindWinningCombinationIn(Combination combination)
+    private IEnumerable<Combination> FindWinningCombinationIn(Combination combination)
     {
         List<Combination> matchingCombinations = new();
 
@@ -186,7 +212,7 @@ public class SlotMachine : MonoBehaviour
                 matchingCombinations.Add(_combinations[i]);
 
         if (matchingCombinations.Count == 0)
-            return null;
+            return matchingCombinations;
 
         for (int i = 0; i < matchingCombinations.Count; i++)
             for (int j = 0; j < matchingCombinations.Count; j++)
@@ -194,8 +220,7 @@ public class SlotMachine : MonoBehaviour
                     if (matchingCombinations[i].Slots.ContainsSequence(matchingCombinations[j].Slots))
                         matchingCombinations.RemoveAt(j);
 
-        //return whole List
-        return matchingCombinations[0];
+        return matchingCombinations;
     }
 
 }

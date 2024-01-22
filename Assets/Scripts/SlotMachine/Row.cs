@@ -20,6 +20,16 @@ public class Row : MonoBehaviour
     public Slot CurrentSlot => _row.GetChild(GetClosestSlotIndex()).GetComponent<Slot>();
     private Vector2 StartingPosition => new(_row.anchoredPosition.x, -_row.rect.height / 2 + _row.GetComponent<VerticalLayoutGroup>().spacing / 2);
 
+    public Combination GetVerticalCombination()
+    {
+        List<Slot> slots = new();
+        foreach (Transform child in _row)
+            if (child.gameObject.activeSelf)
+                slots.Add(child.GetComponent<Slot>());
+
+        return new(slots.Select(x => x.Item));
+    }
+
     public void StartSpinning(float time)
     {
         IsStoped = false;
@@ -35,7 +45,7 @@ public class Row : MonoBehaviour
         float step = Mathf.Abs(slot1.anchoredPosition.y - slot2.anchoredPosition.y);
         float slotHeight = slot1.rect.height;
 
-        return StartingPosition.y - slotHeight / 2 + step * index;
+        return StartingPosition.y + step * index;
     }
 
     private IEnumerator Spin(float spinningTime)
@@ -93,6 +103,7 @@ public class Row : MonoBehaviour
         spawned.GetComponent<ParticleSystemCallback>().Stoped.AddListener(() =>
         {
             IsStoped = true;
+            Debug.Log(this);
             Stoped?.Invoke();
             Destroy(spawned.gameObject);
         });
@@ -100,12 +111,17 @@ public class Row : MonoBehaviour
 
     private int GetClosestSlotIndex()
     {
-        Transform closestChild = _row.GetChild(0);
+        Transform closestChild = null;
         foreach (Transform child in _row.transform)
             if (child.gameObject.activeSelf)
-                if (Vector2.Distance(transform.position, child.position) < Vector2.Distance(transform.position, closestChild.position))
+            {
+                if (closestChild == null)
                     closestChild = child;
-
+                else if (Vector2.Distance(transform.position, child.position) < Vector2.Distance(transform.position, closestChild.position))
+                    closestChild = child;
+            }
+        if (closestChild == null)
+            closestChild = _row.GetChild(0);
         return closestChild.GetSiblingIndex();
     }
 
@@ -120,7 +136,7 @@ public class Row : MonoBehaviour
         yield return 0;
         SpawnSlotsInRow();
         yield return 0;
-        _row.anchoredPosition = new(_row.anchoredPosition.x, RotationToSlot(UnityEngine.Random.Range(0, _row.childCount - 1)));
+        _row.anchoredPosition = new(_row.anchoredPosition.x, RotationToSlot(UnityEngine.Random.Range(_displayedSlots / 2, _row.childCount - 1)));
     }
 
     private void SpawnSlotsInRow()
