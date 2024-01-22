@@ -390,6 +390,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5741044814894065490}
   - component: {fileID: 1753560125426592455}
+  - component: {fileID: 7711386425864421318}
   m_Layer: 5
   m_Name: FreeSpins
   m_TagString: Untagged
@@ -431,6 +432,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _field: {fileID: 7649381154460139437}
+--- !u!225 &7711386425864421318
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3027171848518900528}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &3086099264159258357
 GameObject:
   m_ObjectHideFlags: 0
@@ -679,6 +692,7 @@ MonoBehaviour:
   - _slots: 060000000600000006000000
     _multiplier: 10
   _handle: {fileID: 4834914456868526550}
+  _rowsMerged: 1
 --- !u!1 &8594637590329985088
 GameObject:
   m_ObjectHideFlags: 0
