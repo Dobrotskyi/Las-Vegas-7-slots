@@ -18,5 +18,5 @@ public class FreeSpins : MonoBehaviour
         PlayerInfoHolder.FreeSpinsAmtChanged -= UpdateField;
     }
 
-    private void UpdateField() => _field.text = "Free:" + PlayerInfoHolder.FreeSpinsAmt.ToString();
+    private void UpdateField() => _field.text = PlayerInfoHolder.FreeSpinsAmt.ToString();
 }
