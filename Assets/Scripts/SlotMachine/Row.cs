@@ -12,6 +12,7 @@ public class Row : MonoBehaviour
     [SerializeField] private RectTransform _row;
     [SerializeField] private AnimationCurve _spinningCurve;
     [SerializeField] private ParticleSystem _stopEffect;
+    private AudioSource _as;
     private float _startingSpeed = 20f;
     private int _displayedSlots = 1;
 
@@ -94,6 +95,7 @@ public class Row : MonoBehaviour
         }
         _row.anchoredPosition = new(_row.anchoredPosition.x, 0);
 
+        _as.Play();
         CreateEffect(transform.position);
     }
 
@@ -126,6 +128,7 @@ public class Row : MonoBehaviour
 
     private void Start()
     {
+        _as = GetComponent<AudioSource>();
         StartCoroutine(Init());
         _displayedSlots = FindObjectOfType<SlotMachine>().VisibleSlots;
     }

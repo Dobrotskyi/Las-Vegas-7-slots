@@ -18,6 +18,8 @@ public class SlotMachine : MonoBehaviour
     [SerializeField] private Button _handle;
     [SerializeField] private int _visibleSlots = 1;
     private BettingField _bettingField;
+    [SerializeField] private AudioSource _spinningAS;
+    [SerializeField] private AudioSource _winningAS;
 
     public float SpinningTime { private set; get; } = 3f;
     public float TimeStep { private set; get; } = 2f;
@@ -28,6 +30,7 @@ public class SlotMachine : MonoBehaviour
 
     public void LaunchMachine()
     {
+        _spinningAS.Play();
         Bet = _bettingField.Value;
         if (PlayerInfoHolder.FreeSpinsAmt == 0)
             PlayerInfoHolder.WithdrawCoins(Bet);
@@ -80,6 +83,8 @@ public class SlotMachine : MonoBehaviour
             FirstRowStoped?.Invoke();
         if (!IsRoundEnded) return;
 
+        _spinningAS.Stop();
+
         List<Combination> currentCombinations = new();
         if (VisibleSlots == 1)
             currentCombinations.Add(new(_rows.Select(r => r.CurrentSlot)));
@@ -98,8 +103,6 @@ public class SlotMachine : MonoBehaviour
                 currentCombinations.Add(new(itemsInHorizontal));
             }
         }
-        foreach (var slot in currentCombinations[0].Slots)
-            Debug.Log(slot.ToString());
 
         float multipliers = 0;
         int x2Count = 0;
@@ -120,9 +123,6 @@ public class SlotMachine : MonoBehaviour
 
         multipliers *= x2Count > 0 ? (int)Mathf.Pow(2, x2Count) : 1;
 
-        foreach (var slot in currentCombinations[0].Slots)
-            Debug.Log(slot.ToString());
-
         if (multipliers != 0)
         {
             switch (Roles.CurrentRole)
@@ -131,6 +131,7 @@ public class SlotMachine : MonoBehaviour
                     {
                         int winning = (int)(Bet * multipliers);
                         Debug.Log("Player won");
+                        _winningAS.Play();
                         PlayerInfoHolder.AddCoins(winning);
                         break;
                     }
@@ -148,7 +149,7 @@ public class SlotMachine : MonoBehaviour
                 Debug.Log("Visitor lost");
             if (Roles.CurrentRole == Roles.Role.Dealer)
             {
-                Debug.Log("Dealer Won");
+                _winningAS.Play();
                 PlayerInfoHolder.AddMoney(Bet);
             }
         }
@@ -228,5 +229,4 @@ public class SlotMachine : MonoBehaviour
 
         return matchingCombinations;
     }
-
 }
