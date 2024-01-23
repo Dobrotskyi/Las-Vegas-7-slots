@@ -793,48 +793,37 @@ MonoBehaviour:
     _slotsItems: 0000000000000000
   - _multiplier: 2
     _slotsItems: 000000000000000000000000
-  - _multiplier: 12
-    _slotsItems: 000000000000000000000000
   - _multiplier: 2.5
     _slotsItems: 0100000001000000
   - _multiplier: 3
     _slotsItems: 010000000100000001000000
-  - _multiplier: 13
-    _slotsItems: 01000000010000000100000001000000
   - _multiplier: 3.5
     _slotsItems: 0200000002000000
   - _multiplier: 4
     _slotsItems: 020000000200000002000000
-  - _multiplier: 14
-    _slotsItems: 02000000020000000200000002000000
   - _multiplier: 4.5
     _slotsItems: 0300000003000000
   - _multiplier: 5
     _slotsItems: 030000000300000003000000
-  - _multiplier: 15
-    _slotsItems: 03000000030000000300000003000000
   - _multiplier: 5.5
     _slotsItems: 0400000004000000
   - _multiplier: 6
     _slotsItems: 040000000400000004000000
-  - _multiplier: 16
-    _slotsItems: 04000000040000000400000004000000
   - _multiplier: 7
     _slotsItems: 0500000005000000
   - _multiplier: 8
     _slotsItems: 050000000500000005000000
-  - _multiplier: 17
-    _slotsItems: 05000000050000000500000005000000
   - _multiplier: 9
     _slotsItems: 0600000006000000
   - _multiplier: 10
     _slotsItems: 060000000600000006000000
-  - _multiplier: 18
-    _slotsItems: 06000000060000000600000006000000
   _handle: {fileID: 4834914456868526550}
   _visibleSlots: 1
   _spinningAS: {fileID: 2409035843731382191}
   _roundEndedAS: {fileID: 4135640186884732563}
+  _roundEndClips:
+  - {fileID: 8300000, guid: 6df5adef2630e004e96ae13b09a57685, type: 3}
+  - {fileID: 8300000, guid: ba8e1f4ba58d5ea469f35edab64e3ff4, type: 3}
 --- !u!82 &2409035843731382191
 AudioSource:
   m_ObjectHideFlags: 0
