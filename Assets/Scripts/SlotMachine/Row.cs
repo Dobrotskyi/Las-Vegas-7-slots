@@ -27,7 +27,7 @@ public class Row : MonoBehaviour
             if (child.gameObject.activeSelf)
                 slots.Add(child.GetComponent<Slot>());
 
-        return new(slots.Select(x => x.Item));
+        return new(slots);
     }
 
     public void StartSpinning(float time)
@@ -103,7 +103,6 @@ public class Row : MonoBehaviour
         spawned.GetComponent<ParticleSystemCallback>().Stoped.AddListener(() =>
         {
             IsStoped = true;
-            Debug.Log(this);
             Stoped?.Invoke();
             Destroy(spawned.gameObject);
         });
