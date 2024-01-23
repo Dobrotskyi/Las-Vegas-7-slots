@@ -68,7 +68,7 @@ public class Row : MonoBehaviour
             return _spinningCurve.Evaluate(normalizedProgress);
         }
 
-        while (t < spinningTime * 0.95f)
+        while (t < spinningTime * 0.85f)
         {
             step = _startingSpeed * getEasing();
             t += Time.deltaTime;

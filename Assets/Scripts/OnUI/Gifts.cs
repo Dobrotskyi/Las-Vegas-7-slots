@@ -1,20 +1,30 @@
-using System.Collections;
 using TMPro;
 using UnityEngine;
 
-public class CasinoGifts : MonoBehaviour
+public class Gifts : MonoBehaviour
 {
     [SerializeField] private RectTransform _body;
     [SerializeField] private TextMeshProUGUI _giftAmtField;
     [SerializeField] private GameObject _giftBody;
     [SerializeField] private float _maxMoneyMultiplier = 0.25f;
+
+    private enum GIftsFor
+    {
+        Player,
+        Casino
+    }
+    [SerializeField] private GIftsFor _role = GIftsFor.Casino;
+
     private float _difference = 0;
     private Animator _animator;
 
     public void GiftChosen()
     {
         int added = (int)Random.Range(_difference, _difference * _maxMoneyMultiplier + _difference);
-        PlayerInfoHolder.AddMoney(added);
+        if (_role == GIftsFor.Casino)
+            PlayerInfoHolder.AddMoney(added);
+        else
+            PlayerInfoHolder.AddCoins(added);
         _giftAmtField.text = "+" + added.ToString();
         _giftBody.SetActive(true);
 
@@ -41,17 +51,23 @@ public class CasinoGifts : MonoBehaviour
     private void Awake()
     {
         _animator = GetComponent<Animator>();
-        PlayerInfoHolder.NotEnoughMoney += NotEnoughMoney;
+        if (_role == GIftsFor.Casino)
+            PlayerInfoHolder.NotEnoughMoney += ShowPanel;
+        else
+            PlayerInfoHolder.NotEnoughCoins += ShowPanel;
         if (_body.gameObject.activeSelf)
             _body.gameObject.SetActive(false);
     }
 
     private void OnDestroy()
     {
-        PlayerInfoHolder.NotEnoughMoney -= NotEnoughMoney;
+        if (_role == GIftsFor.Casino)
+            PlayerInfoHolder.NotEnoughMoney -= ShowPanel;
+        else
+            PlayerInfoHolder.NotEnoughCoins -= ShowPanel;
     }
 
-    private void NotEnoughMoney(int difference)
+    private void ShowPanel(int difference)
     {
         _difference = difference;
         _body.gameObject.SetActive(true);

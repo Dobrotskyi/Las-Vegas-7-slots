@@ -5,6 +5,7 @@ using UnityEngine;
 public static class PlayerInfoHolder
 {
     public static event Action<int> NotEnoughMoney;
+    public static event Action<int> NotEnoughCoins;
     public static event Action CasinoMoneyUpdated;
     public static event Action PlayerCoinsUpdated;
     public static event Action BonusAmtChanged;
@@ -14,6 +15,7 @@ public static class PlayerInfoHolder
     private const string PLAYER_COINS = "Player Coins";
     private const string FREESPINS_AMT = "Free Spins Amt";
     public const int FREESPIN_BET = 500;
+    public const int MIN_PLAYER_COINS = 100;
 
     public static Dictionary<Items, int> PriceList = new()
     {
@@ -77,7 +79,7 @@ public static class PlayerInfoHolder
 
     public static int CasinoMoney
     {
-        get => PlayerPrefs.GetInt(CASINO_MONEY, 0);
+        get => PlayerPrefs.GetInt(CASINO_MONEY, 500);
         private set
         {
             PlayerPrefs.SetInt(CASINO_MONEY, value);
@@ -88,13 +90,20 @@ public static class PlayerInfoHolder
 
     public static int PlayerCoins
     {
-        get => PlayerPrefs.GetInt(PLAYER_COINS, 0);
+        get => PlayerPrefs.GetInt(PLAYER_COINS, 1000);
         private set
         {
             PlayerPrefs.SetInt(PLAYER_COINS, value);
             PlayerCoinsUpdated?.Invoke();
         }
     }
+
+    public static void TryNotEnoughCoinsInvoke()
+    {
+        if (MIN_PLAYER_COINS > PlayerCoins)
+            NotEnoughCoins?.Invoke(MIN_PLAYER_COINS - PlayerCoins);
+    }
+
     public static int GetPlayerCoins() => PlayerCoins;
 
     public static void AddMoney(int money)
@@ -119,7 +128,6 @@ public static class PlayerInfoHolder
 
     public static void WithdrawCoins(int coins)
     {
-        if (PlayerCoins < coins) return;
         PlayerCoins -= coins;
     }
 }

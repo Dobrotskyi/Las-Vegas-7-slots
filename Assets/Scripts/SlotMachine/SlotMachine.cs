@@ -54,6 +54,8 @@ public class SlotMachine : MonoBehaviour
 
     private void OnEnable()
     {
+        PlayerInfoHolder.TryNotEnoughCoinsInvoke();
+
         _bettingField = FindObjectOfType<BettingField>(true);
 
         foreach (var row in _rows)
@@ -117,6 +119,8 @@ public class SlotMachine : MonoBehaviour
 
         for (int i = 0; i < _rows.Count; i++)
         {
+            if (i >= currentCombinations.Count)
+                break;
             HandleFreeSpinBonus(currentCombinations[i]);
             if (currentCombinations[i].SlotsItems.Contains(Items.X2))
                 x2Count++;
@@ -161,6 +165,7 @@ public class SlotMachine : MonoBehaviour
         }
 
         RoundEnded?.Invoke();
+        PlayerInfoHolder.TryNotEnoughCoinsInvoke();
     }
 
     private void PlayLostSound()
