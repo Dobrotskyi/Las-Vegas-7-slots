@@ -9818,6 +9818,18 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1491593778}
     - target: {fileID: 7234407803052956852, guid: f665c95758014bd4da12b9f584add23d, type: 3}
+      propertyPath: _roundEndClips.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7234407803052956852, guid: f665c95758014bd4da12b9f584add23d, type: 3}
+      propertyPath: _roundEndClips.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: 6df5adef2630e004e96ae13b09a57685, type: 3}
+    - target: {fileID: 7234407803052956852, guid: f665c95758014bd4da12b9f584add23d, type: 3}
+      propertyPath: _roundEndClips.Array.data[1]
+      value: 
+      objectReference: {fileID: 8300000, guid: ba8e1f4ba58d5ea469f35edab64e3ff4, type: 3}
+    - target: {fileID: 7234407803052956852, guid: f665c95758014bd4da12b9f584add23d, type: 3}
       propertyPath: _combinations.Array.data[2]._slots.Array.size
       value: 4
       objectReference: {fileID: 0}

@@ -19,7 +19,8 @@ public class SlotMachine : MonoBehaviour
     [SerializeField] private int _visibleSlots = 1;
     private BettingField _bettingField;
     [SerializeField] private AudioSource _spinningAS;
-    [SerializeField] private AudioSource _winningAS;
+    [SerializeField] private AudioSource _roundEndedAS;
+    [SerializeField] private List<AudioClip> _roundEndClips;
 
     public float SpinningTime { private set; get; } = 3f;
     public float TimeStep { private set; get; } = 2f;
@@ -131,13 +132,14 @@ public class SlotMachine : MonoBehaviour
                     {
                         int winning = (int)(Bet * multipliers);
                         Debug.Log("Player won");
-                        _winningAS.Play();
+                        PlayWonSound();
                         PlayerInfoHolder.AddCoins(winning);
                         break;
                     }
                 case Roles.Role.Dealer:
                     {
                         Debug.Log("Casino lost");
+                        PlayLostSound();
                         PlayerInfoHolder.WithdrawMoney((int)(Bet * multipliers));
                         break;
                     }
@@ -146,15 +148,31 @@ public class SlotMachine : MonoBehaviour
         else
         {
             if (Roles.CurrentRole == Roles.Role.Player)
+            {
                 Debug.Log("Visitor lost");
+                PlayLostSound();
+            }
             if (Roles.CurrentRole == Roles.Role.Dealer)
             {
-                _winningAS.Play();
+                _roundEndedAS.Play();
+                PlayWonSound();
                 PlayerInfoHolder.AddMoney(Bet);
             }
         }
 
         RoundEnded?.Invoke();
+    }
+
+    private void PlayLostSound()
+    {
+        _roundEndedAS.clip = _roundEndClips[1];
+        _roundEndedAS.Play();
+    }
+
+    private void PlayWonSound()
+    {
+        _roundEndedAS.clip = _roundEndClips[0];
+        _roundEndedAS.Play();
     }
 
     private void HandleFreeSpinBonus(Combination combination)
