@@ -1891,7 +1891,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbb01345d11608644b1bdf730840e77e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _body: {fileID: 1578317840}
+  _body: {fileID: 1095998869}
   _iconOpen: {fileID: 777758811}
   _iconClose: {fileID: 309092561}
 --- !u!1001 &852492110
@@ -2348,6 +2348,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd65a16ceaadeda46bfd14d240dcca3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1095998869 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7421556135279067063, guid: 1215a19248bc71e408431ac2a2b27fb4, type: 3}
+  m_PrefabInstance: {fileID: 1578317838}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1102463953
 GameObject:
   m_ObjectHideFlags: 0
@@ -3824,10 +3829,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: SettingsLayout
       objectReference: {fileID: 0}
-    - target: {fileID: 7896074578236240625, guid: 1215a19248bc71e408431ac2a2b27fb4, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8064044978083517702, guid: 1215a19248bc71e408431ac2a2b27fb4, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -3856,11 +3857,6 @@ PrefabInstance:
 --- !u!224 &1578317839 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7740540976368242840, guid: 1215a19248bc71e408431ac2a2b27fb4, type: 3}
-  m_PrefabInstance: {fileID: 1578317838}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1578317840 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7896074578236240625, guid: 1215a19248bc71e408431ac2a2b27fb4, type: 3}
   m_PrefabInstance: {fileID: 1578317838}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1694121077

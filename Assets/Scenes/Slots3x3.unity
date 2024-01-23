@@ -4067,10 +4067,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: SettingsLayout
       objectReference: {fileID: 0}
-    - target: {fileID: 7896074578236240625, guid: 1215a19248bc71e408431ac2a2b27fb4, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8064044978083517702, guid: 1215a19248bc71e408431ac2a2b27fb4, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -4103,7 +4099,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1578317840 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 7896074578236240625, guid: 1215a19248bc71e408431ac2a2b27fb4, type: 3}
+  m_CorrespondingSourceObject: {fileID: 7421556135279067063, guid: 1215a19248bc71e408431ac2a2b27fb4, type: 3}
   m_PrefabInstance: {fileID: 1578317838}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1644530273
