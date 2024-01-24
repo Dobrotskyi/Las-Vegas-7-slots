@@ -19,8 +19,6 @@ public class BuySlotMachine : MonoBehaviour
 
     private void Awake()
     {
-        PlayerPrefs.DeleteKey(_type.ToString());
-
         _price = PlayerInfoHolder.PriceListMachines[_type];
         _priceField.text = _price.ToString();
         PlayerInfoHolder.CasinoMoneyUpdated += OnEnable;
@@ -39,7 +37,7 @@ public class BuySlotMachine : MonoBehaviour
             Destroy(gameObject);
         }
 
-        if (PlayerInfoHolder.PlayerCoins < _price)
+        if (PlayerInfoHolder.CasinoMoney < _price)
             _button.interactable = false;
         else _button.interactable = true;
     }

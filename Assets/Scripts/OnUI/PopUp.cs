@@ -23,4 +23,10 @@ public class PopUp : MonoBehaviour
     {
         _animator = GetComponent<Animator>();
     }
+
+    private void OnEnable()
+    {
+        if (_body.gameObject.activeSelf)
+            _body.gameObject.SetActive(false);
+    }
 }

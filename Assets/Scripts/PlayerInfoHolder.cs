@@ -21,15 +21,15 @@ public static class PlayerInfoHolder
     {
         {
             Items.X2,
-            0
+            100
         },
         {
             Items.FreeSpin,
-            0
+            200
         },
         {
             Items.Clone,
-            0
+            400
         }
     };
 
@@ -51,8 +51,8 @@ public static class PlayerInfoHolder
 
     public static Dictionary<SlotMachineTypes, int> PriceListMachines = new()
     {
-        {SlotMachineTypes.Slots3x3, 100 },
-        {SlotMachineTypes.Slots4x4, 40000 }
+        {SlotMachineTypes.Slots3x3, 1000 },
+        {SlotMachineTypes.Slots4x4, 2000 }
     };
 
     public static int GetBonusAmount(Items item)
