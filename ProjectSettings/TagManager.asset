@@ -3,7 +3,11 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Handle
+  - SlotsClassic
+  - Slots3x3
+  - Slots4x4
   layers:
   - Default
   - TransparentFX

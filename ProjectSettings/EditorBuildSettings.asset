@@ -12,6 +12,12 @@ EditorBuildSettings:
     path: Assets/Scenes/Loading.unity
     guid: 9443cd2d2b0acc146999173cce6045cf
   - enabled: 1
-    path: Assets/Scenes/Slots1.unity
+    path: Assets/Scenes/SlotsClassic.unity
     guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/Scenes/Slots3x3.unity
+    guid: 10bc175061ff23049b54967a99805bf4
+  - enabled: 1
+    path: Assets/Scenes/Slots4x4.unity
+    guid: 10d343e8ddec52c42adb64d8474030b4
   m_configObjects: {}

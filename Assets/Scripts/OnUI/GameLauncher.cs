@@ -5,6 +5,7 @@ public class GameLauncher : MonoBehaviour
 {
     [SerializeField] private ParticleSystem _effect;
     [SerializeField] private HorizontalLayoutGroup _slotsGroup;
+    private string _selected = SlotMachineTypes.SlotsClassic.ToString();
     private LoadSceneClick _loadScene;
 
     public void PullTheHandle()
@@ -22,9 +23,15 @@ public class GameLauncher : MonoBehaviour
         }
     }
 
+    public void ChangeSelected(Toggle toggle)
+    {
+        if (toggle.isOn)
+            _selected = toggle.gameObject.tag;
+    }
+
     private void Launch()
     {
-        _loadScene.LoadScene("Slots1");
+        _loadScene.LoadScene(_selected);
     }
 
     private void Awake()

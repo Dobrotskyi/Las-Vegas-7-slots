@@ -27,7 +27,7 @@ public class BonusesDisplay : MonoBehaviour
             if (!_priceField.gameObject.activeSelf)
                 _priceField.gameObject.SetActive(true);
 
-            _priceField.text = PlayerInfoHolder.PriceList[_item].ToString();
+            _priceField.text = PlayerInfoHolder.PriceListBonus[_item].ToString();
         }
     }
 
@@ -53,7 +53,7 @@ public class BonusesDisplay : MonoBehaviour
     {
         if (_priceField != null)
         {
-            if (PlayerInfoHolder.PlayerCoins < PlayerInfoHolder.PriceList[_item])
+            if (PlayerInfoHolder.PlayerCoins < PlayerInfoHolder.PriceListBonus[_item])
                 _button.interactable = false;
             else
                 _button.interactable = true;

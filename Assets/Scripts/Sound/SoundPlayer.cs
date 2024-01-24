@@ -1,24 +1,25 @@
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.UI;
 
 public class SoundPlayer : MonoBehaviour
 {
-    //Music track: Vibing by Pufino
+    //Music track: Sunset by Lukrembo
     //Source: https://freetouse.com/music
-    //Music for Videos(Free Download)
+    //Free Vlog Music Without Copyright
     [SerializeField] private AudioSource _musicAS;
     [SerializeField] private AudioSource _soundAS;
-    [SerializeField] private float _musicVolume = 0.5f;
+    [SerializeField] private AudioMixer _audioMixer;
     Button[] _buttons;
 
     private void Awake()
     {
-        if (SoundSettings.MusicMuted)
-            _musicAS.volume = 0;
         SoundSettings.OnSettingsChanged += OnAudioSettingsChanged;
         _buttons = FindObjectsOfType<Button>(true);
         foreach (var button in _buttons)
-            button.onClick.AddListener(PlayClickSound);
+            if (!button.CompareTag("Handle"))
+                button.onClick.AddListener(PlayClickSound);
     }
 
     private void OnDestroy()
@@ -30,10 +31,15 @@ public class SoundPlayer : MonoBehaviour
 
     private void OnAudioSettingsChanged()
     {
-        if (_musicAS.volume != _musicVolume && !SoundSettings.MusicMuted)
-            _musicAS.volume = _musicVolume;
-        else if (_musicAS.volume != 0 && SoundSettings.MusicMuted)
-            _musicAS.volume = 0;
+        if (SoundSettings.MusicMuted)
+            _audioMixer.SetFloat("MusicVolume", -80);
+        else
+            _audioMixer.SetFloat("MusicVolume", 0);
+
+        if (SoundSettings.AudioMuted)
+            _audioMixer.SetFloat("EffectsVolume", -80);
+        else
+            _audioMixer.SetFloat("EffectsVolume", 0);
     }
 
     private void PlayClickSound()
