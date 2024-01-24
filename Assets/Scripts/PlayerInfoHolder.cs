@@ -51,8 +51,8 @@ public static class PlayerInfoHolder
 
     public static Dictionary<SlotMachineTypes, int> PriceListMachines = new()
     {
-        {SlotMachineTypes.Slots3x3, 1000 },
-        {SlotMachineTypes.Slots4x4, 2000 }
+        {SlotMachineTypes.Slots3x3, 10000 },
+        {SlotMachineTypes.Slots4x4, 20000 }
     };
 
     public static int GetBonusAmount(Items item)
