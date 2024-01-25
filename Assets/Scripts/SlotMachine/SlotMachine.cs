@@ -144,12 +144,12 @@ public class SlotMachine : MonoBehaviour
                         if (multipliers < 1)
                         {
                             PlayWonSound();
-                            PlayerInfoHolder.AddMoney((int)(Bet * multipliers));
+                            PlayerInfoHolder.AddMoney((int)(Bet - Bet * multipliers));
                         }
                         else
                         {
                             PlayLostSound();
-                            PlayerInfoHolder.WithdrawMoney((int)(Bet * multipliers));
+                            PlayerInfoHolder.WithdrawMoney((int)(Bet * multipliers - Bet));
                         }
                         break;
                     }

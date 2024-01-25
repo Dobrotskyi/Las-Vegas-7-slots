@@ -54,6 +54,13 @@ public class Gifts : MonoBehaviour
         _difference = 0;
     }
 
+    private void OnEnable()
+    {
+        if (_role == GIftsFor.Player)
+            if (PlayerInfoHolder.PlayerCoins < BettingField.MIN_BET)
+                ShowPanel();
+    }
+
     private void Awake()
     {
         _animator = GetComponent<Animator>();
