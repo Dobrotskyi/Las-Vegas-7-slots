@@ -4876,7 +4876,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _priceField: {fileID: 305669433}
-  _type: 0
+  _type: 2
   _toggleGO: {fileID: 1972204882}
   _button: {fileID: 1114470355}
 --- !u!114 &1114470359
@@ -6533,7 +6533,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _priceField: {fileID: 1899997844}
-  _type: 0
+  _type: 1
   _toggleGO: {fileID: 543101369}
   _button: {fileID: 1923191439}
 --- !u!114 &1923191439 stripped
