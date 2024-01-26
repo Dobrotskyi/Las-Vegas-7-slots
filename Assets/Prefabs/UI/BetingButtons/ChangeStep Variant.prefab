@@ -18,7 +18,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5537702490798243902, guid: f35a3cc7f792d7b4ea142ae4c0026a06, type: 3}
       propertyPath: m_fontSize
-      value: 62.8
+      value: 240
       objectReference: {fileID: 0}
     - target: {fileID: 5903578090409771296, guid: f35a3cc7f792d7b4ea142ae4c0026a06, type: 3}
       propertyPath: m_Name
@@ -27,10 +27,10 @@ PrefabInstance:
     - target: {fileID: 6067249771279595871, guid: f35a3cc7f792d7b4ea142ae4c0026a06, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: e3248b3efc378d44c9f108ad43c9aaa5, type: 3}
+      objectReference: {fileID: 21300000, guid: 96092f96df1b8bf419e09aab6969db80, type: 3}
     - target: {fileID: 7777710144214076171, guid: f35a3cc7f792d7b4ea142ae4c0026a06, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 4.7000427
+      value: 4.7000732
       objectReference: {fileID: 0}
     - target: {fileID: 7953262311905364148, guid: f35a3cc7f792d7b4ea142ae4c0026a06, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -118,7 +118,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8987916749842973758, guid: f35a3cc7f792d7b4ea142ae4c0026a06, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 5.2100525
+      value: 5.210083
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3544243145993289688, guid: f35a3cc7f792d7b4ea142ae4c0026a06, type: 3}
