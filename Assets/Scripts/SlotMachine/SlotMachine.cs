@@ -135,16 +135,22 @@ public class SlotMachine : MonoBehaviour
                 case Roles.Role.Player:
                     {
                         int winning = (int)(Bet * multipliers);
-                        Debug.Log("Player won");
                         PlayWonSound();
                         PlayerInfoHolder.AddCoins(winning);
                         break;
                     }
                 case Roles.Role.Dealer:
                     {
-                        Debug.Log("Casino lost");
-                        PlayLostSound();
-                        PlayerInfoHolder.WithdrawMoney((int)(Bet * multipliers));
+                        if (multipliers < 1)
+                        {
+                            PlayWonSound();
+                            PlayerInfoHolder.AddMoney((int)(Bet - Bet * multipliers));
+                        }
+                        else
+                        {
+                            PlayLostSound();
+                            PlayerInfoHolder.WithdrawMoney((int)(Bet * multipliers - Bet));
+                        }
                         break;
                     }
             }
@@ -153,12 +159,10 @@ public class SlotMachine : MonoBehaviour
         {
             if (Roles.CurrentRole == Roles.Role.Player)
             {
-                Debug.Log("Visitor lost");
                 PlayLostSound();
             }
             if (Roles.CurrentRole == Roles.Role.Dealer)
             {
-                _roundEndedAS.Play();
                 PlayWonSound();
                 PlayerInfoHolder.AddMoney(Bet);
             }

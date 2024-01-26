@@ -20,11 +20,17 @@ public class Gifts : MonoBehaviour
 
     public void GiftChosen()
     {
-        int added = (int)Random.Range(_difference, _difference * _maxMoneyMultiplier + _difference);
+        int added = 0;
         if (_role == GIftsFor.Casino)
+        {
+            added = (int)Random.Range(_difference, _difference * _maxMoneyMultiplier + _difference);
             PlayerInfoHolder.AddMoney(added);
+        }
         else
-            PlayerInfoHolder.AddCoins(added);
+        {
+            added = Random.Range(1, 3);
+            PlayerInfoHolder.FreeSpinsAmt += added;
+        }
         _giftAmtField.text = "+" + added.ToString();
         _giftBody.SetActive(true);
 
@@ -48,6 +54,13 @@ public class Gifts : MonoBehaviour
         _difference = 0;
     }
 
+    private void OnEnable()
+    {
+        if (_role == GIftsFor.Player)
+            if (PlayerInfoHolder.PlayerCoins < BettingField.MIN_BET)
+                ShowPanel();
+    }
+
     private void Awake()
     {
         _animator = GetComponent<Animator>();
@@ -67,10 +80,15 @@ public class Gifts : MonoBehaviour
             PlayerInfoHolder.NotEnoughCoins -= ShowPanel;
     }
 
+    private void ShowPanel()
+    {
+        _body.gameObject.SetActive(true);
+        _animator.SetTrigger("SizeUp");
+    }
+
     private void ShowPanel(int difference)
     {
         _difference = difference;
-        _body.gameObject.SetActive(true);
-        _animator.SetTrigger("SizeUp");
+        ShowPanel();
     }
 }

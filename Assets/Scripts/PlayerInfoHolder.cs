@@ -5,7 +5,7 @@ using UnityEngine;
 public static class PlayerInfoHolder
 {
     public static event Action<int> NotEnoughMoney;
-    public static event Action<int> NotEnoughCoins;
+    public static event Action NotEnoughCoins;
     public static event Action CasinoMoneyUpdated;
     public static event Action PlayerCoinsUpdated;
     public static event Action BonusAmtChanged;
@@ -51,8 +51,8 @@ public static class PlayerInfoHolder
 
     public static Dictionary<SlotMachineTypes, int> PriceListMachines = new()
     {
-        {SlotMachineTypes.Slots3x3, 1000 },
-        {SlotMachineTypes.Slots4x4, 2000 }
+        {SlotMachineTypes.Slots3x3, 10000 },
+        {SlotMachineTypes.Slots4x4, 20000 }
     };
 
     public static int GetBonusAmount(Items item)
@@ -123,7 +123,7 @@ public static class PlayerInfoHolder
     public static void TryNotEnoughCoinsInvoke()
     {
         if (MIN_PLAYER_COINS > PlayerCoins)
-            NotEnoughCoins?.Invoke(MIN_PLAYER_COINS - PlayerCoins);
+            NotEnoughCoins?.Invoke();
     }
 
     public static int GetPlayerCoins() => PlayerCoins;

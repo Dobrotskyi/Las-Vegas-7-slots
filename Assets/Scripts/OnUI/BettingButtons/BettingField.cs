@@ -4,6 +4,8 @@ using UnityEngine.UI;
 
 public class BettingField : ChangeDisplayedAmt
 {
+    public const int MIN_BET = 100;
+
     [SerializeField] private ChangeDisplayedAmt _step;
     [SerializeField] private List<Button> _buttons;
 
@@ -11,11 +13,9 @@ public class BettingField : ChangeDisplayedAmt
 
     public override void Add()
     {
-#if UNITY_EDITOR
         if (Value + Step > PlayerInfoHolder.PlayerCoins)
             Add(PlayerInfoHolder.PlayerCoins - Value);
         else
-#endif
             base.Add();
     }
 
