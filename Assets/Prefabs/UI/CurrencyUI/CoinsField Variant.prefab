@@ -36,14 +36,6 @@ PrefabInstance:
       propertyPath: m_fontSize
       value: 400
       objectReference: {fileID: 0}
-    - target: {fileID: 4153962708894805381, guid: bf11352c8be21bf4897f0704a5a3faf7, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -0.39996338
-      objectReference: {fileID: 0}
-    - target: {fileID: 4153962708894805381, guid: bf11352c8be21bf4897f0704a5a3faf7, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0.4506836
-      objectReference: {fileID: 0}
     - target: {fileID: 5032252767462870097, guid: bf11352c8be21bf4897f0704a5a3faf7, type: 3}
       propertyPath: m_Sprite
       value: 
