@@ -20,6 +20,7 @@ public class Row : MonoBehaviour
     public Items CurrentSlotItem => CurrentSlot.Item;
     public Slot CurrentSlot => _row.GetChild(GetClosestSlotIndex()).GetComponent<Slot>();
     private Vector2 StartingPosition => new(_row.anchoredPosition.x, -_row.rect.height / 2 + _row.GetComponent<VerticalLayoutGroup>().spacing / 2);
+    private Vector2 StartingPositionNoSpacing => new(_row.anchoredPosition.x, -_row.rect.height / 2);
 
     public Combination GetVerticalCombination()
     {
@@ -78,7 +79,7 @@ public class Row : MonoBehaviour
             _row.anchoredPosition = newPosition;
 
             if (checkForRowEnd())
-                _row.anchoredPosition = StartingPosition;
+                _row.anchoredPosition = StartingPositionNoSpacing;
             yield return new WaitForEndOfFrame();
         }
 

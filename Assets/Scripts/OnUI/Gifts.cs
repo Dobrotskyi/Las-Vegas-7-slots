@@ -7,6 +7,7 @@ public class Gifts : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _giftAmtField;
     [SerializeField] private GameObject _giftBody;
     [SerializeField] private float _maxMoneyMultiplier = 0.25f;
+    private bool _given;
 
     private enum GIftsFor
     {
@@ -20,6 +21,10 @@ public class Gifts : MonoBehaviour
 
     public void GiftChosen()
     {
+        if (_given)
+            return;
+
+        _given = true;
         int added = 0;
         if (_role == GIftsFor.Casino)
         {
@@ -52,11 +57,12 @@ public class Gifts : MonoBehaviour
         _giftBody.SetActive(false);
         _body.gameObject.SetActive(false);
         _difference = 0;
+        _given = false;
     }
 
     private void OnEnable()
     {
-        if (_role == GIftsFor.Player)
+        if (_role == GIftsFor.Player && PlayerInfoHolder.FreeSpinsAmt == 0)
             if (PlayerInfoHolder.PlayerCoins < BettingField.MIN_BET)
                 ShowPanel();
     }
@@ -82,6 +88,8 @@ public class Gifts : MonoBehaviour
 
     private void ShowPanel()
     {
+        if (PlayerInfoHolder.FreeSpinsAmt > 0)
+            return;
         _body.gameObject.SetActive(true);
         _animator.SetTrigger("SizeUp");
     }
