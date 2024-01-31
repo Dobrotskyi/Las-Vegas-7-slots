@@ -59,7 +59,7 @@ public class Row : MonoBehaviour
 
         RectTransform slot1 = _row.GetChild(0).GetComponent<RectTransform>();
         float slotHeight = slot1.rect.height;
-        bool checkForRowEnd() => _row.anchoredPosition.y > _row.rect.height / 2 - slotHeight;
+        bool checkForRowEnd() => _row.anchoredPosition.y > _row.rect.height / 2 - slotHeight * _displayedSlots;
 
         _row.anchoredPosition = new Vector2(_row.anchoredPosition.x, RotationToSlot(UnityEngine.Random.Range(0, _row.childCount)));
 

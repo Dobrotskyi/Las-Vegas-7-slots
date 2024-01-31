@@ -31,6 +31,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3892721782270653399}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -80,7 +81,6 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 27463004884565491, guid: 0fe09aebdd8ed0440887b1e6b3aec5ea, type: 3}
@@ -177,11 +177,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3112583719793910261, guid: 0fe09aebdd8ed0440887b1e6b3aec5ea, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 400
       objectReference: {fileID: 0}
     - target: {fileID: 3112583719793910261, guid: 0fe09aebdd8ed0440887b1e6b3aec5ea, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 170.5825
       objectReference: {fileID: 0}
     - target: {fileID: 3112583719793910261, guid: 0fe09aebdd8ed0440887b1e6b3aec5ea, type: 3}
       propertyPath: m_LocalPosition.x
@@ -217,7 +217,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3112583719793910261, guid: 0fe09aebdd8ed0440887b1e6b3aec5ea, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -114.70874
       objectReference: {fileID: 0}
     - target: {fileID: 3112583719793910261, guid: 0fe09aebdd8ed0440887b1e6b3aec5ea, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -269,7 +269,7 @@ PrefabInstance:
       objectReference: {fileID: -2002860018, guid: 31b33a3169474d1419506a6ce5ea3784, type: 3}
     - target: {fileID: 4490038582699318332, guid: 0fe09aebdd8ed0440887b1e6b3aec5ea, type: 3}
       propertyPath: m_Name
-      value: Combination (14) Variant
+      value: CombinationX4
       objectReference: {fileID: 0}
     - target: {fileID: 5025149534180602817, guid: 0fe09aebdd8ed0440887b1e6b3aec5ea, type: 3}
       propertyPath: m_Sprite
@@ -309,22 +309,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8772826730808456754, guid: 0fe09aebdd8ed0440887b1e6b3aec5ea, type: 3}
       propertyPath: m_fontSize
-      value: 201.35
+      value: 125.65
       objectReference: {fileID: 0}
     - target: {fileID: 8822977398593455813, guid: 0fe09aebdd8ed0440887b1e6b3aec5ea, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 1.9001465
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 6687526956550106262, guid: 0fe09aebdd8ed0440887b1e6b3aec5ea, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 6581598803841579898}
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 3459424086086823741, guid: 0fe09aebdd8ed0440887b1e6b3aec5ea, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 384496933093923149}
   m_SourcePrefab: {fileID: 100100000, guid: 0fe09aebdd8ed0440887b1e6b3aec5ea, type: 3}
 --- !u!224 &3892721782270653399 stripped
 RectTransform:
